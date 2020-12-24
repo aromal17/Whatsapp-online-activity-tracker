@@ -1,4 +1,5 @@
 from selenium import webdriver
+from win10toast import ToastNotifier
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
@@ -57,6 +58,8 @@ while True:
                     try:
                         browser.find_element_by_xpath(ONLINE_STATUS_LABEL)
                         print(target + ' is online')
+                        toaster = ToastNotifier()
+                        toaster.show_toast(target + " is online")
                     except:
                         print(target + ' is offline')
                     # time.sleep(1)
