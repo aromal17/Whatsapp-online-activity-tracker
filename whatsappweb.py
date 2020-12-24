@@ -8,19 +8,19 @@ import time
 import os
 
 # XPath selectors
-NEW_CHAT_BTN = '/html[1]/body[1]/div[1]/div[1]/div[1]/div[3]/div[1]/header[1]/div[2]/div[1]/span[1]/div[2]'
-INPUT_TXT_BOX = '/html[1]/body[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/label[1]/div[1]/div[2]'
-ONLINE_STATUS_LABEL = '/html[1]/body[1]/div[1]/div[1]/div[1]/div[4]/div[1]/header[1]/div[2]/div[2]'
+nameSearchField = '/html[1]/body[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/label[1]/div[1]/div[2]'
+onlineStatusLabel = '/html[1]/body[1]/div[1]/div[1]/div[1]/div[4]/div[1]/header[1]/div[2]/div[2]'
 
-# Replace below with the list of targets to be tracked
-TARGETS = {'"Achan"': '+91 93115 56657'}
+# Replace below with the list of targets/contacts to be tracked along with their complete contact numbers
+TARGETS = {'contact name 1': 'contact number 1','contact name 2': 'contact number 2'}
 
 # Replace below path with the absolute path
-browser = webdriver.Chrome(r'D:\Software\chromedriver.exe')
+browser = webdriver.Chrome(r'enter\path\for\chromedriver.exe')
 
 # Load Whatsapp Web page
 browser.get("https://web.whatsapp.com/")
 wait = WebDriverWait(browser, 600)
+
 
 while True:
     # Clear screen
@@ -30,42 +30,30 @@ while True:
     for target in TARGETS:
         tryAgain = True
 
-        # Wait untill new chat button is visible
-        # new_chat_title = wait.until(EC.presence_of_element_located((By.XPATH, NEW_CHAT_BTN)))
-
         while tryAgain:
             try:
-                # Click on new chat button
-                # new_chat_title.click()
 
                 # Wait untill input text box is visible
-                input_box = wait.until(EC.presence_of_element_located((By.XPATH, INPUT_TXT_BOX)))
-
-                time.sleep(0.5)
+                input_box = wait.until(EC.presence_of_element_located((By.XPATH,nameSearchField)))
 
                 # Write phone number
                 input_box.send_keys(TARGETS[target])
 
-                time.sleep(1)
-
                 # Press enter to confirm the phone number
                 input_box.send_keys(Keys.ENTER)
 
-                time.sleep(5)
                 tryAgain = False
 
+                # try:
                 try:
-                    try:
-                        browser.find_element_by_xpath(ONLINE_STATUS_LABEL)
-                        print(target + ' is online')
-                        toaster = ToastNotifier()
-                        toaster.show_toast(target + " is online")
-                    except:
-                        print(target + ' is offline')
-                    # time.sleep(1)
+                    print(browser.find_element_by_xpath(onlineStatusLabel))
+                    print(target + ' is online')
+                    toaster = ToastNotifier()
+                    toaster.show_toast(target + " is online")
                 except:
-                    print('Exception 1')
-                    # time.sleep(10)
+                    print(target + ' is offline')
+                    toaster = ToastNotifier()
+                    toaster.show_toast(target + " is OFFLINE")
+
             except:
-                print('Exception 2')
-                # time.sleep(4)
+                print('Error fetching input box details')
