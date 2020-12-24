@@ -42,6 +42,8 @@ while True:
                 # Press enter to confirm the phone number
                 input_box.send_keys(Keys.ENTER)
 
+                
+                time.sleep(5)
                 tryAgain = False
 
                 # try:
